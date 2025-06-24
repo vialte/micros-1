@@ -1,0 +1,22 @@
+#include "stm32g0xx.h"
+/*1.Aoacionar um botão, ligar um led. O led permanece acionado enquanto o botão
+estiver acionado, o led desliga quando o botão não estiver acionado.*/
+
+main(){
+	RCC->IOPENR=0x3f;//clock
+	GPIOA->MODER=0x28000000;//liga o 13 e 14
+	GPIOC->MODER=0x00;//define como entrada
+	GPIOB->MODER=0x1555;//ativa os led(de pc0 a pc6)como saida
+	int n;
+
+	while(1){
+		n = GPIOC->IDR & 0b111; //n le os botoes q tao ativados
+		//      liga assim pq ligamos no pc0, 1 e 2
+		for(int i=0; i<n; i++){//laço q passa por tudo os botao
+
+			GPIOB->ODR |= (0x1 << i);
+			//GPIO->ODR |= (1 << i);
+		}
+		GPIOB->ODR = 0x00;
+	}
+}
