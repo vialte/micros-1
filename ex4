@@ -1,0 +1,30 @@
+#include "stm32g0xx.h"
+/*4. Um painel apresenta dois conjuntos de chaves, A e B. Cada conjunto é composto por
+duas chaves, chave 0 e chave 1. Desenvolva um programa para o ARM que acione
+uma saída (led), sempre que os dois conjuntos apresentem a mesma combinação.
+
+Exemplo:
+Se as chave A0 estiver ligada e a
+chave A1 estiver desligada, a lâmpada só poderá acender se a chave B0 estiver
+ligada e a chave B1 estiver desligada..*/
+
+int main(){
+	RCC->IOPENR=0x3f;//clock
+	GPIOA->MODER=0x28000000;//liga o 13 e 14
+	GPIOC->MODER=0x1;
+
+	int i,j;
+
+	while(1){
+		i=GPIOA->IDR & 0x1;
+		j=(GPIOA->IDR & 0x2)>>1;
+		//ta deslocando pra ver so a primeira casa
+
+		if(i==j){
+			GPIOC->ODR = 0x1;//liga led
+		}
+		 else{
+			GPIOC->ODR = 0x0;//desliga led
+		}
+	}
+}
