@@ -1,0 +1,22 @@
+/*5.
+Exibir
+num display de sete segmentos o seu nome.*/
+
+#include "stm32g0xx.h"
+int main(){
+	RCC->IOPENR=0x3F;
+	//RCC->IOPENR＝0x3F;
+	GPIOA->MODER=0x28000000;
+
+	GPIOB->MODER=0x1555;//pb0 a pb5 como saida
+
+	int display[16]={0x5E,0x79,0x06,0x6D,0x79};
+	//vetor 16 espacos d    E   I     S     E
+	int n;
+
+	while(1){
+		n = GPIOA-> IDR & 0xF;
+		GPIOB -> ODR = display[n];
+
+	}
+}
