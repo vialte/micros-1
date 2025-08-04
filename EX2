@@ -1,6 +1,8 @@
 #include "stm32g0xx.h"
-/*1.Aoacionar um botão, ligar um led. O led permanece acionado enquanto o botão
-estiver acionado, o led desliga quando o botão não estiver acionado.*/
+/*1.2.   
+Acionar
+o número de leds (até sete) correspondente ao número binário representado por
+três chaves/botões*/
 
 main(){
 	RCC->IOPENR=0x3f;//clock
