@@ -1,0 +1,38 @@
+#include "stm32g0xx.h"
+//7)Implemente um comando liga-desliga através de um único botão.
+main(){
+	RCC->IOPENR=0x3f;//liga clock
+	GPIOA->MODER=0x28000400;
+
+	GPIOC->MODER=0x0;
+
+	RCC->APBENR1=0x20;
+	TIM7->PSC=999;
+	TIM7->ARR=3199;
+	TIM7->CR1 |=0x01;
+	//desse jeito, o t=2s
+
+	int press=0;
+
+	while(1){
+		if((GPIOC->IDR&0x08) && press == 0){
+		//verifica se pc3 ta ligado E press tiver desligado
+			GPIOA->ODR ^=0x20;
+			//inverte o estado do led pa5
+			press=1;
+			//liga botao
+			TIM7->CNT= 0;
+			//p zerar o contador
+			TIM7->SR= 0;
+			//zerar o flag
+		}
+
+		if(TIM7->SR&0x01){
+			//verifica se o flag ta ligado
+				if((GPIOC->IDR&0x08)==0){
+					//verifica se o pc3 ta ligado
+				press=0;
+			}
+		}
+	}
+}
